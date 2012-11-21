@@ -5,9 +5,11 @@ require "json"
 
 helpers do 
   def mongo_connect
-    @client = Mongo::Connection.new('ds037827.mongolab.com',37827)
+    server = "10.1.208.41"
+    port = 27017
+    @client = Mongo::Connection.new(server, port)
     @db = @client['poetry']    
-    @db.authenticate('poet','123')
+    #@db.authenticate('poet','123')
     @coll = @db['poems']
 
   end
