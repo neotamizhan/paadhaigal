@@ -1,13 +1,16 @@
 #encoding=UTF-8
 require 'sinatra'
 require 'mongo'
-require "json"
+require 'json'
 
 helpers do 
   def mongo_connect
-    server = "10.1.208.41"
-    port = 27017
-    @client = Mongo::Connection.new(server, port)
+    localdb = {:server => "10.1.208.41", :port => 27017}
+    remotedb = {:server => "ds037827.mongolab.com", :port => 37827}
+    
+    db = remotedb
+
+    @client = Mongo::Connection.new(db[:server], db[:port])
     @db = @client['poetry']    
     #@db.authenticate('poet','123')
     @coll = @db['poems']
