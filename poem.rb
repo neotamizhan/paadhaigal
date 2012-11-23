@@ -10,7 +10,7 @@ helpers do
     macbookdb = {:server => "localhost", :port => 27017}
     remotedb = {:server => "ds037827.mongolab.com", :port => 37827, :user => 'poet', :pwd=>'123'}
     
-    db = macbookdb #localdb #remotedb
+    db = remotedb #macbookdb #localdb #remotedb
 
     @client = Mongo::Connection.new(db[:server], db[:port])
     @db = @client['poetry']        
