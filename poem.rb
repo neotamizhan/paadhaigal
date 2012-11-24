@@ -43,6 +43,10 @@ end
     {'tags' => {"$all" => tags}}
   end
 
+  def get_all_tags
+    @coll.distinct(:tags).to_json
+  end
+
   def term_criteria 
     return {} unless params[:term]
     {'text' => /#{params[:term]}/}
@@ -60,8 +64,14 @@ end
   end
 end
 
+#api section
+
 get '/api/v1/tags/:tags' do
   get_json tag_criteria
+end
+
+get '/api/v1/tags' do
+  get_all_tags
 end
 
 get '/api/v1/searchtext/:term' do  
