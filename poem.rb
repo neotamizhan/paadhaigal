@@ -44,6 +44,7 @@ end
   end
 
   def get_all_tags
+    mongo_connect
     @coll.distinct(:tags).to_json
   end
 
