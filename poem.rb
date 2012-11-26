@@ -2,7 +2,6 @@
 require 'sinatra'
 require 'mongo'
 require 'json'
-#require './hack'
 
 helpers do 
   def mongo_connect

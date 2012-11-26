@@ -1,0 +1,6 @@
+development:
+  sessions:
+    default:
+      database: poetry
+      hosts:
+        - 10.1.208.41:27017
