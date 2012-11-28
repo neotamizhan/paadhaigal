@@ -1,0 +1,9 @@
+localdb:
+  server: localip
+  port: 0000
+
+remotedb:
+  server: remoteip
+  port: 00000
+  user: user
+  pwd:  pwd

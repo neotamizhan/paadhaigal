@@ -13,11 +13,11 @@ helpers do
   end
 
   def mongo_connect    
-    db = read_config 'remotedb' #macbookdb #localdb #remotedb
+    db = read_config 'localdb' #macbookdb #localdb #remotedb
 
-    @client = Mongo::Connection.new(db[:server], db[:port])
+    @client = Mongo::Connection.new(db['server'], db['port'])
     @db = @client['poetry']        
-    @db.authenticate(db[:user], db[:pwd]) if db.has_key? :user
+    @db.authenticate(db['user'], db['pwd']) if db.has_key? :user
     @coll = @db['poems']
   end
 
