@@ -32,6 +32,9 @@ helpers do
   end
 
   #Hack to replace chaining .merge calls on hashes with + sign. 
+  # Given that a,b and c are hashes, the below method lets us do 
+  # a + b + c, instead of 
+  # a.merge(b.merge(c))
   class Hash
     def +(y)
       self.merge(y)
@@ -70,7 +73,7 @@ end
 
 #api section
 
-#getters
+#get verb
 
 get '/api/v1/tags/:tags' do
   get_json tag_criteria
