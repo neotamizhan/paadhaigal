@@ -2,20 +2,23 @@
 require 'sinatra'
 require 'mongo'
 require 'json'
+require 'yaml'
 
 helpers do 
-  def mongo_connect
-    localdb = {:server => "10.1.208.41", :port => 27017}
-    macbookdb = {:server => "localhost", :port => 27017}
-    remotedb = {:server => "ds037827.mongolab.com", :port => 37827, :user => 'poet', :pwd=>'123'}
-    
-    db = remotedb #macbookdb #localdb #remotedb
+
+  def read_config mode
+    config = YAML.load_file('db.yaml')
+
+    config[mode]
+  end
+
+  def mongo_connect    
+    db = read_config 'remotedb' #macbookdb #localdb #remotedb
 
     @client = Mongo::Connection.new(db[:server], db[:port])
     @db = @client['poetry']        
     @db.authenticate(db[:user], db[:pwd]) if db.has_key? :user
     @coll = @db['poems']
-
   end
 
   def get_json criteria
@@ -28,11 +31,12 @@ helpers do
     a.merge(b) {|key, a_item, b_item| merge_recursively(a_item, b_item) }
   end
 
-class Hash
-  def +(y)
-    self.merge(y)
+  #Hack to replace chaining .merge calls on hashes with + sign. 
+  class Hash
+    def +(y)
+      self.merge(y)
+    end
   end
-end
 
   # criteria builders
 
@@ -65,6 +69,8 @@ end
 end
 
 #api section
+
+#getters
 
 get '/api/v1/tags/:tags' do
   get_json tag_criteria
