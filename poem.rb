@@ -13,7 +13,7 @@ helpers do
   end
 
   def mongo_connect    
-    db = read_config 'localdb' #macbookdb #localdb #remotedb
+    db = read_config 'remotedb' #macbookdb #localdb #remotedb
 
     @client = Mongo::Connection.new(db['server'], db['port'])
     @db = @client['poetry']        
@@ -41,7 +41,22 @@ helpers do
     end
   end
 
+
+  def add_tags
+    return {} unless params[:tags]
+
+
+    tags = params[:tags].split(',')
+
+    puts "and here too #{tags}"
+    mongo_connect
+    @coll.update(serial_criteria, {"$addToSet" => {'tags' => {"$each" => tags}}} )
+
+    204
+  end
+
   # criteria builders
+
 
   def tag_criteria 
     return {} unless params[:tags] # return empty to help with merge
@@ -93,5 +108,11 @@ end
 
 get '/api/v1/:urlkey/:serial' do  
   get_json serial_criteria
+end
+
+#put verb
+put '/api/v1/:urlkey/:serial/tags/:tags' do 
+  puts 'got here'
+  add_tags
 end
 
