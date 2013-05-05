@@ -4,7 +4,9 @@ app.controller("PoetryCtrl", function ($scope, $http) {
 
     //$scope.cards = Cbk.creditcards.query({ cif: $scope.cif, acc: $scope.acc, civilid: $scope.civilid }, isArray = true);
 
-    $scope.poems = [];
+    $scope.poems = [
+                    {"author":"valluvar","explanation":"As all letters have the letter A for their first, so the world has the eternal God for its first. ","name":"thirukkural","serial":1,"tags":["thirukkural","valluvar","அறத்துப்பால்","கடவுள் வாழ்த்து"],"text":["அகர முதல எழுத்தெல்லாம் ஆதி","பகவன் முதற்றே உலகு."],"translation":"A, as its first of letters, every speech maintains; <br>The \"Primal Deity\" is first through all the world's domains. ","urlkey":"kural"}
+                   ];
 
     //$scope.searchparams = [{ name: 'CIF', value: 'cif' }, { name: 'Mobile', value: 'mobile' }, { name: 'Account', value: 'account' }, { name: 'Civil ID', value: 'civilid'}];
 
