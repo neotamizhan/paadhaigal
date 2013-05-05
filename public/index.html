@@ -53,7 +53,27 @@
         </div>
 
         <div ng-show="term">{{term}} இடம்பெற்ற பாடல்கள் : {{poems.length}}</div>
-        <div>
+        <div class="well" ng-repeat="poem in poems">
+             <table class="table-condensed">
+                    <tr>       
+                        <td>
+                            {{poem.serial}}.
+                        </td>            
+                        <td>
+                           <table>                            
+                                <tr ng-repeat="line in poem.text">                                
+                                    <td>{{line}}</td>
+                                </tr>
+                                <tr>
+                                    <td>                                        
+                                        <span ng-repeat="tag in poem.tags" class="badge badge-success tag"><a class="tag" href="#" ng-click="searchTags('{{tag}}')">{{tag}}</a></span>
+                                    </td>
+                                </tr>
+                           </table>
+                        </td>                   
+                    </tr>
+                </table>
+            <!--
                 <table ng-repeat="poem in poems" class="table-striped table-condensed">
                     <tr>       
                         <td>
@@ -73,7 +93,8 @@
                         </td>                   
                     </tr>
 
-                </table>            
+                </table>   
+                -->         
         </div>
 
         <div>
