@@ -24,6 +24,8 @@ app.controller("PoetryCtrl", function ($scope, $resource, $http) {
     };
 
     $scope.searchTerms = function () {
+    	console.log($scope.term);
+    	
          $http({
             method: 'get',
             url: '/api/v1/searchtext/' + $scope.term
