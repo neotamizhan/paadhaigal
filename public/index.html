@@ -25,7 +25,11 @@
             .tag {
                 padding-left: 5px;
                 padding-right: 5px;
+                text-decoration: none;
+                color: white;
             }
+
+
         </style>
     </head>
     <body ng-app="app">
@@ -48,7 +52,7 @@
             </center>
         </div>
 
-
+        <div ng-show="term">{{term}} இடம்பெற்ற பாடல்கள் : {{poems.length}}</div>
         <div>
                 <table ng-repeat="poem in poems" class="table-striped table-condensed">
                     <tr>       
@@ -62,7 +66,7 @@
                                 </tr>
                                 <tr>
                                     <td>                                        
-                                        <span ng-repeat="tag in poem.tags" class="badge badge-inverse tag"><a href="#" ng-click="searchTags('{{tag}}')">{{tag}}</a></span>
+                                        <span ng-repeat="tag in poem.tags" class="badge badge-success tag"><a class="tag" href="#" ng-click="searchTags('{{tag}}')">{{tag}}</a></span>
                                     </td>
                                 </tr>
                            </table>
