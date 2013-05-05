@@ -3,7 +3,6 @@ require 'sinatra'
 require 'mongo'
 require 'json'
 require 'yaml'
-require 'faraday'
 
 helpers do 
 
@@ -13,12 +12,8 @@ helpers do
     config[mode]
   end
 
-  def base_url
-    "https://api.mongolab.com/api/1/databases/poetry/collections/poems?apiKey=50aa141ce4b0021e6aceebc0"
-  end
-
   def mongo_connect    
-    db = read_config 'remotedb' #macbookdb #localdb #remotedb
+    db = read_config 'macbookdb' #macbookdb #localdb #remotedb
 
     @client = Mongo::Connection.new(db['server'], db['port'])
     @db = @client['poetry']        
@@ -26,36 +21,10 @@ helpers do
     @coll = @db['poems']
   end
 
-  def get_json criteria, method=:get
-    #mongo_connect
+  def get_json criteria
+    mongo_connect
     content_type :json      
-    #coll.find(criteria, {:fields => {:_id=>0}}).sort(:serial).to_a.to_json   
-
-    Faraday.get base_url, 
-    if (method == :get)
-      url = "#{base_url}&q=#{criteria}"      
-      #url = url.gsub(/=>/, ':')    
-      resp = Faraday.get url
-    else
-
-    end
-    resp.body
-  end  
-
-
-  def get_json_rest criteria
-    puts criteria
-    content_type :json
-    conn = Faraday.new(:url => 'https://api.mongolab.com') do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger                  # log requests to STDOUT
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
-
-    puts criteria.to_json
-    resp = conn.get '/api/1/databases/poetry/collections/poems?apiKey=50aa141ce4b0021e6aceebc0&s={serial:1}', {"q" => criteria.to_json}
-
-    resp.body
+    @coll.find(criteria, {:fields => {:_id=>0}}).sort(:serial).to_a.to_json           
   end
 
   def merge_recursively(a, b)
@@ -83,7 +52,6 @@ helpers do
     mongo_connect
     @coll.update(serial_criteria, {"$addToSet" => {'tags' => {"$each" => tags}}} )
 
-
     204
   end
 
@@ -103,14 +71,13 @@ helpers do
 
   def term_criteria 
     return {} unless params[:term]
-    #{'text' => /#{params[:term]}/}
-    {'text' => {"$regex" => params[:term],"$options" =>"i"}}
+    {'text' => /#{params[:term]}/}
   end
 
   def serial_criteria 
     return {} unless params[:urlkey] and params[:serial]
     
-    {'urlkey' => params[:urlkey],'serial' => params[:serial].to_i}  
+    {'urlkey' => params[:urlkey], 'serial' => params[:serial].to_i}  
   end
 
   def master_criteria
@@ -124,7 +91,7 @@ end
 #get verb
 
 get '/api/v1/tags/:tags' do
-  get_json_rest tag_criteria
+  get_json tag_criteria
 end
 
 get '/api/v1/tags' do
@@ -132,15 +99,15 @@ get '/api/v1/tags' do
 end
 
 get '/api/v1/searchtext/:term' do  
-  get_json_rest term_criteria
+  get_json term_criteria
 end
 
 get '/api/v1/search' do
-  get_json_rest master_criteria
+  get_json master_criteria
 end
 
 get '/api/v1/:urlkey/:serial' do  
-  get_json_rest serial_criteria
+  get_json serial_criteria
 end
 
 #put verb

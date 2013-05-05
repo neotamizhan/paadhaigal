@@ -13,25 +13,66 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <style type="text/css">
+            body {
+                padding-left: 20px;
+                padding-top: 30px;
+            }
+
+            .tag {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        </style>
     </head>
     <body ng-app="app">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-
+        <div class="container" ng-controller="PoetryCtrl">
         <!-- Add your site or application content here -->
-
-        <div ng-controller="PoetryCtrl">
-            <table ng-repeat="poem in poems">
-                <tr ng-repeat="line in poem.text">
-                    <td>
-                        {{line}}
-                    </td>                    
-                </tr>
-            </table>
+        <div class="page-header" >
+            <h1>பாதைகள்</h1>
+            <p>பழந்தமிழ் பாடல்களுக்கான தேடுபொறி...</p>
         </div>
+        <div >
+            <center>            
+            <div id="searchbar" class="span12">
+            <form class="form-search">
+            <input type="text" name="term" id="term" ng-model="term" class="search-query"> <button ng-click="searchPoems()" class="btn btn-success">தேடுக</button>
+            </form>
+            </div>
+            </center>
+        </div>
+
+
+        <div>
+                <table ng-repeat="poem in poems" class="table-striped table-condensed">
+                    <tr>       
+                        <td>
+                            {{poem.serial}}.
+                        </td>            
+                        <td>
+                           <table>                            
+                                <tr ng-repeat="line in poem.text">                                
+                                    <td>{{line}}</td>
+                                </tr>
+                                <tr>
+                                    <td>                                        
+                                        <span ng-repeat="tag in poem.tags" class="badge badge-inverse tag"><a href="#" ng-click="searchTags({{tag}})">{{tag}}</a></span>
+                                    </td>
+                                </tr>
+                           </table>
+                        </td>                   
+                    </tr>
+
+                </table>            
+        </div>
+
+        <div>
         <script src="js/vendor/jquery-1.9.1.min.js"></script>
         <script src="js/angular.js"></script>
         <script src="js/angular-resource.js"></script>

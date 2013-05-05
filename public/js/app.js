@@ -1,12 +1,17 @@
-var app = angular.module("app", []);
+var app = angular.module("app", ['ngResource']);
 
-app.controller("PoetryCtrl", function ($scope, $http) {
+
+app.controller("PoetryCtrl", function ($scope, $resource, $http) {
 
     //$scope.cards = Cbk.creditcards.query({ cif: $scope.cif, acc: $scope.acc, civilid: $scope.civilid }, isArray = true);
+
+    var WordSearch = $resource('/api/v1/searchtext/:term');
 
     $scope.poems = [
                     {"author":"valluvar","explanation":"As all letters have the letter A for their first, so the world has the eternal God for its first. ","name":"thirukkural","serial":1,"tags":["thirukkural","valluvar","அறத்துப்பால்","கடவுள் வாழ்த்து"],"text":["அகர முதல எழுத்தெல்லாம் ஆதி","பகவன் முதற்றே உலகு."],"translation":"A, as its first of letters, every speech maintains; <br>The \"Primal Deity\" is first through all the world's domains. ","urlkey":"kural"}
                    ];
+
+    $scope.urlkey = "kural";                   
 
     //$scope.searchparams = [{ name: 'CIF', value: 'cif' }, { name: 'Mobile', value: 'mobile' }, { name: 'Account', value: 'account' }, { name: 'Civil ID', value: 'civilid'}];
 
@@ -18,14 +23,21 @@ app.controller("PoetryCtrl", function ($scope, $http) {
         other: "{} poems found."
     };
 
-    $scope.searchPoems = function () {
-        $http({
+    $scope.searchTerms = function () {
+         $http({
             method: 'get',
-            url: '/api/v1/searchtext/:term',
-            //params: { cif: $scope.cif, acc: $scope.acc, civilid: $scope.civilid, mobile: $scope.mobile }
-            params: { criteria: $scope.criteria.value, searchval: $scope.searchval }
-        }).success(function (data, status) { $scope.cards = data; });
+            url: '/api/v1/searchtext/' + $scope.term
+            //params: { cif: $scope.cif, acc: $scope.acc, civilid: $scope.civilid, mobile: $scope.mobile }            
+        }).success(function (data, status) { $scope.poems = data; });
     };
+
+    $scope.searchTags = function (tag) {
+         $http({
+            method: 'get',
+            url: '/api/v1/tags/' + tag
+            //params: { cif: $scope.cif, acc: $scope.acc, civilid: $scope.civilid, mobile: $scope.mobile }            
+        }).success(function (data, status) { $scope.poems = data; });        
+    }
 
     $scope.clearSearch = function () {
         $scope.cards = [];
