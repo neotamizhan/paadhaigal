@@ -46,13 +46,14 @@
             <center>            
             <div id="searchbar" class="span12">
             <form class="form-search">
-            <input type="text" name="term" id="term" ng-model="term" class="search-query"> <button ng-click="searchTerms()" class="btn btn-success">தேடுக</button>
+            <input type="text" name="term" id="term" ng-model="term" class="search-query"> <button ng-click="search()" class="btn btn-success">தேடுக</button>
             </form>
             </div>
             </center>
         </div>
 
-        <div ng-show="term">{{term}} இடம்பெற்ற பாடல்கள் : {{poems.length}}</div>
+        <ng-pluralize count="poems.length" when="pluralizer"></ng-pluralize>
+
         <div class="well" ng-repeat="poem in poems">
              <table class="table-condensed">
                     <tr>       
@@ -66,7 +67,7 @@
                                 </tr>
                                 <tr>
                                     <td>                                        
-                                        <span ng-repeat="tag in poem.tags" class="badge badge-success tag"><a class="tag" href="#" ng-click="searchTags('{{tag}}')">{{tag}}</a></span>
+                                        <button ng-repeat="tag in poem.tags" class="btn btn-small btn-primary" ng-click="searchTags(tag)">{{tag}}</button>
                                     </td>
                                 </tr>
                            </table>
