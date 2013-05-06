@@ -2,7 +2,7 @@ var app = angular.module("app", ['ngResource']);
 
 app.factory('Poetry', function ($resource, $http) {
     return {
-
+        mlTerm : $resource('https://api.mongolab.com/api/1/databases/poetry/collections/poems?apiKey=50aa141ce4b0021e6aceebc0&q={text:{"$regex":":term","$options":"i"}}'),        
         byTerm : $resource('/api/v1/searchtext/:term'),
         byTags : $resource('/api/v1/tags/:tags'),
         bySerial : $resource('/api/v1/:urlkey/:serial')
@@ -48,7 +48,8 @@ app.controller("PoetryCtrl", function ($scope, $resource, $http, Poetry) {
 
 
     $scope.searchTerms = function () {
-        $scope.poems = Poetry.byTerm.query({term : $scope.term});    
+        //$scope.poems = Poetry.byTerm.query({term : $scope.term});    
+        $scope.poems = Poetry.mlTerm.query({term : $scope.term});
     };
 
     $scope.searchTags = function (tags) {
