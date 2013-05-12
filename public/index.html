@@ -47,6 +47,13 @@
               padding-bottom:5px;
             }
 
+            .divider {
+              margin: 20px 0px 0px;
+              min-width: 0px;
+              min-height: 0px;
+              max-width: 10000px;
+              max-height: 10000px;
+            }
         </style>
     </head>
     <body ng-app="app">
@@ -100,6 +107,8 @@
               <span class="label label-info tag" ng-repeat="tag in poem.tags" ng-click="searchTags(tag)">{{tag}}</span>
             </div>
           </div>
+
+          <div class="row-fluid span3 offset5"><img src="img/profile_divider.png" /></div>
         </div>
         </div>
 
