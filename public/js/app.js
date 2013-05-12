@@ -2,8 +2,7 @@ angular.module('SharedServices', [])
 .config(function ($httpProvider) {
     $httpProvider.responseInterceptors.push('myHttpInterceptor');
     var spinnerFunction = function (data, headersGetter) {
-        // todo start the spinner here
-        //alert('done0');            
+        // todo start the spinner here          
         $('#loading').show();
         return data;
     };
@@ -14,15 +13,11 @@ angular.module('SharedServices', [])
     return function (promise) {
         return promise.then(function (response) { //success
             // do something on success
-            // todo hide the spinner
-            //alert('done1');
             $('#loading').hide();
             return response;
 
         }, function (response) { //error
             // do something on error
-            // todo hide the spinner
-            //alert('done2');
             $('#loading').hide();
             return $q.reject(response);
         });
@@ -58,59 +53,59 @@ app.controller("PoetryCtrl", function ($scope, Poetry) {
         other: "{} poems found."
     };
 
-    $scope.search = function () {
+  $scope.search = function () {
 
-        var term = $scope.term;
-        if (term.indexOf("tags:") > -1) {
-            $scope.searchTags(term);
-            return;            
-        }
+      var term = $scope.term;
+      if (term.indexOf("tags:") > -1) {
+          $scope.searchTags(term);
+          return;            
+      }
 
-        var searchSerial = term.match(/(\D+) (\d+)/);
-        if ( searchSerial ) {            
-            $scope.searchBySerial(searchSerial[1], parseInt(searchSerial[2]))
-            return;
-        }        
+      var searchSerial = term.match(/(\D+) (\d+)/);
+      if ( searchSerial ) {            
+          $scope.searchBySerial(searchSerial[1], parseInt(searchSerial[2]));
+          return;
+      }        
+      
+      $scope.searchTerms();
+  };
 
-        $scope.searchTerms();
-    };
+  $scope.searchTerms = function () {
+    Poetry.query({text:{"$regex":$scope.term,"$options":"i"}}, $scope.queryObject.sort)
+    .then(function (poems) {
+      $scope.poems = poems;
+    });
+      //$scope.poems = Poetry.byTerm.query({so : 1, term : $scope.term});    
+  };
 
-    $scope.searchTerms = function () {
-    	Poetry.query({text:{"$regex":$scope.term,"$options":"i"}}, $scope.queryObject.sort)
-    	.then(function (poems) {
-    		$scope.poems = poems;
-    	})
-        //$scope.poems = Poetry.byTerm.query({so : 1, term : $scope.term});    
-    };
+  $scope.searchTags = function (tags) {
+      var tagArray = tags.replace("tags:","").trim().split(",");
+      
+      for (var i = 0; i < tagArray.length; i++) {
+        tagArray[i] = tagArray[i].trim();
+      }         
+      console.log(tagArray);
 
-    $scope.searchTags = function (tags) {
-        tagArray = tags.replace("tags:","").trim().split(",");
-        
-        for (var i = 0; i < tagArray.length; i++) {
-          	tagArray[i] = tagArray[i].trim();
-        };          
-        console.log(tagArray);
+      Poetry.query({tags:{"$all":tagArray}}, {sort: {serial:1}})
+      .then(function (poems) {
+        console.log(poems.length);
+        $scope.poems = poems;
+      });
+  };
 
-        Poetry.query({tags:{"$all":tagArray}}, {sort: {serial:1}})
-        .then(function (poems) {
-        	console.log(poems.length);
-        	$scope.poems = poems;
-        })
-    };
+  $scope.searchBySerial = function (urlkey, serial) {
+    Poetry.query({urlkey:urlkey, serial:serial}, {sort: {serial:1}})
+    .then(function (poems) {
+      $scope.poems = poems;
+    });
+  };
 
-    $scope.searchBySerial = function (urlkey, serial) {
-    	Poetry.query({urlkey:urlkey, serial:serial}, {sort: {serial:1}})
-    	.then(function (poems) {
-    		$scope.poems = poems;
-    	})
-    };
-
-    $scope.fetchAllTags = function () {    	
-    	Poetry.distinct("tags",{})
-    	.then(function (all_tags) {
-    		$scope.all_tags = all_tags;
-    	})
-    };
+  $scope.fetchAllTags = function () {
+    Poetry.distinct("tags",{})
+    .then(function (all_tags) {
+      $scope.all_tags = all_tags;
+    });
+  };
 
     
     DB = $scope.poems;

@@ -44,7 +44,7 @@
         <div class="container" ng-controller="PoetryCtrl">            
         <!-- Add your site or application content here -->
         <div class="page-header row-fluid" >
-            <h1>பாதைகள்</h1>
+            <h1>பாதைகள்</h1>  
             <p>பழந்தமிழ் பாடல்களுக்கான தேடுபொறி...</p>
         </div>
         <div class = "row-fluid">
@@ -64,27 +64,19 @@
         <div id="loading" style="display: none">ஓங்கலிடை தோன்றி, உங்களை நோக்கி... சற்றே பொறுமின்...</div>
         <ng-pluralize count="poems.length" when="pluralizer"></ng-pluralize>
 
-        <div class="well small" ng-repeat="poem in poems">
-             <table class="table-condensed">
-                    <tr>
-                        <td>
-                            {{poem.serial}}
-                        </td>
-                        <td>
-                           <table>
-                                <tr ng-repeat="line in poem.text">
-                                    <td>{{line}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button ng-repeat="tag in poem.tags" class="btn btn-small btn-primary" ng-click="searchTags(tag)">{{tag}}</button>
-                                    </td>
-                                </tr>
-                           </table>
-                        </td>
-                    </tr>
-                </table>                
+        <div class="row-fluid" ng-repeat="poem in poems">
+          <div class="row-fluid span10">
+            <div class="span1">
+                {{poem.serial}}
+            </div>    
+            <div class="span8">
+                <p ng-repeat="line in poem.text">{{line}}</p>                
+            </div>
           </div>
+          <div class="row-fluid span10">
+            <button ng-repeat="tag in poem.tags" class="btn btn-small btn-primary" ng-click="searchTags(tag)">{{tag}}</button>
+          </div>
+        </div>
           
             <!--
                 <table ng-repeat="poem in poems" class="table-striped table-condensed">
