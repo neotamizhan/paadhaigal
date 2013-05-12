@@ -300,22 +300,6 @@ textarea {
 }
 
 
-.item {
-  width: 300px;
-  height: 200px;
-  margin: 5px;
-  float: left;
-  overflow: hidden;
-  position: relative;
-  background: #888;
-  color: #222;
-  -webkit-border-top-right-radius: 1.2em;
-      -moz-border-radius-topright: 1.2em;
-          border-top-right-radius: 1.2em;
-}
-
-#container {
-  border: 1px solid #666;
-  padding: 5px;
-  margin-bottom: 20px;
+ul, li {
+    list-style-type: none;
 }
