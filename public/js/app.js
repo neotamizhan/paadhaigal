@@ -3,6 +3,7 @@ angular.module('SharedServices', [])
     $httpProvider.responseInterceptors.push('myHttpInterceptor');
     var spinnerFunction = function (data, headersGetter) {
         // todo start the spinner here
+        $('#status-alert').hide();
         $('#loading').show();
         return data;
     };
@@ -14,11 +15,13 @@ angular.module('SharedServices', [])
         return promise.then(function (response) { //success
             // do something on success
             $('#loading').hide();
+            $('#status-alert').show();
             return response;
 
         }, function (response) { //error
             // do something on error
             $('#loading').hide();
+            $('#status-alert').show();
             return $q.reject(response);
         });
     };
@@ -63,7 +66,7 @@ app.controller("PoetryCtrl", function ($scope, Poetry) {
 
       var searchSerial = term.match(/(\D+) (\d+)/);
       if ( searchSerial ) {
-          $scope.searchBySerial(searchSerial[1], parseInt(searchSerial[2]));
+          $scope.searchBySerial(searchSerial[1], parseInt(searchSerial[2],10));
           return;
       }
 
