@@ -323,6 +323,28 @@ Potential improvements for the codebase:
 9. Add more Tamil literary works
 10. Implement full-text search indexing for better performance
 
+### 📋 Modernization Roadmap
+
+For a comprehensive plan to modernize this application with AI-powered features, see:
+- **[MODERNIZATION_ROADMAP.md](./MODERNIZATION_ROADMAP.md)** - Complete 24-month modernization strategy
+- **[AI_FEATURES_SUMMARY.md](./AI_FEATURES_SUMMARY.md)** - Quick reference for 33 AI use-cases
+
+The roadmap covers:
+- Security hardening and infrastructure modernization
+- Backend migration to Python/FastAPI or modern Ruby/Node.js
+- Frontend upgrade to React/Vue with TypeScript
+- AI features: semantic search, chatbot, TTS, recommendations, and more
+- Mobile apps, PWA, and voice interfaces
+- Community features and content expansion
+- Performance optimization and scalability
+
+**Quick wins** (first 30 days):
+1. Move API keys to environment variables
+2. Migrate to MongoDB Atlas
+3. Add Redis caching
+4. Implement semantic search with embeddings
+5. Improve mobile UI
+
 ## License
 
 Please check the repository for license information.
