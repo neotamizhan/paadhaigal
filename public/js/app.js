@@ -28,12 +28,31 @@ angular.module('SharedServices', [])
 });
 
 
-var app = angular.module("app", ['mongolabResourceHttp','SharedServices']);
+var app = angular.module("app", ['SharedServices']);
 
-app.constant('MONGOLAB_CONFIG',{API_KEY:'50aa141ce4b0021e6aceebc0', DB_NAME:'poetry'});
-
-app.factory('Poetry', function ($mongolabResourceHttp) {
-    return $mongolabResourceHttp('poems');
+app.factory('Poetry', function ($http) {
+    return {
+      query: function(criteria, sort) {
+        if (criteria && criteria.tags && criteria.tags.$all) {
+          var tags = criteria.tags.$all.join(',');
+          return $http.get('/api/v1/tags/' + encodeURIComponent(tags)).then(function(r) { return r.data; });
+        }
+        if (criteria && criteria.text && criteria.text.$regex) {
+          var term = criteria.text.$regex;
+          return $http.get('/api/v1/searchtext/' + encodeURIComponent(term)).then(function(r) { return r.data; });
+        }
+        if (criteria && criteria.urlkey && criteria.serial != null) {
+          return $http.get('/api/v1/' + encodeURIComponent(criteria.urlkey) + '/' + encodeURIComponent(criteria.serial)).then(function(r) { return r.data; });
+        }
+        return $http.get('/api/v1/search').then(function(r) { return r.data; });
+      },
+      distinct: function(field, criteria) {
+        if (field === 'tags') {
+          return $http.get('/api/v1/tags').then(function(r) { return r.data; });
+        }
+        return Promise.resolve([]);
+      }
+    };
 });
 
 app.controller("PoetryCtrl", function ($scope, Poetry) {

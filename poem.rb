@@ -14,7 +14,8 @@ helpers do
   end
 
   def base_url
-    "https://api.mongolab.com/api/1/databases/poetry/collections/poems?apiKey=50aa141ce4b0021e6aceebc0"
+    key = ENV['MONGOLAB_API_KEY']
+    "https://api.mongolab.com/api/1/databases/poetry/collections/poems?apiKey=#{key}"
   end
 
   def mongo_connect    
@@ -53,7 +54,8 @@ helpers do
     end
 
     puts criteria.to_json
-    resp = conn.get '/api/1/databases/poetry/collections/poems?apiKey=50aa141ce4b0021e6aceebc0&s={serial:1}', {"q" => criteria.to_json}
+    params = { 'apiKey' => ENV['MONGOLAB_API_KEY'], 's' => '{serial:1}', 'q' => criteria.to_json }
+    resp = conn.get('/api/1/databases/poetry/collections/poems', params)
 
     resp.body
   end
