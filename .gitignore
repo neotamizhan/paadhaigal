@@ -1,1 +1,7 @@
 db.yaml
+.env
+.c9revisions/
+*.c9save
+*.old
+*.bak
+.DS_Store
